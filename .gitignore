@@ -1,6 +1,7 @@
 .vs/
 x64/
 repo-con.250bd9c6/
+build/
 
 *.vcxproj
 *.sln
