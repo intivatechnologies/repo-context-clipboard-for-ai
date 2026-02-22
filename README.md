@@ -88,9 +88,9 @@ To build the program .exe, you can do either of the following:
 <ol>
 <li>Navigate to the build/ directory.</li>
 <li>Open HelloWorld.sln.</li>
-<li><b>In Solution Explorer</b>b>, right-click HelloWorld.</li>
+<li><b>In Solution Explorer</b>, right-click HelloWorld.</li>
 <li>Click "Set as Startup Project".</li>
-<li>Press <b>Run</b>b> or <b>Local Windows Debugger</b>b>.</li>
+<li>Press <b>Run</b> or <b>Local Windows Debugger</b>.</li>
 </ol>
 
 ### Through the command line
