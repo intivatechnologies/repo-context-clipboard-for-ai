@@ -24,6 +24,7 @@ I've chosen this license only to validate [https://mikesinclair66.github.io](my 
 You will have to have [https://cmake.org](CMake) installed to run the [](**installation steps**).
 
 ## Software Requirements Spec
+<div style="border-bottom: 1px">
 ### 1. Purpose
 1.1 System Overview
 
@@ -54,7 +55,7 @@ Terms for measurable success:
     </li>
 </ul>
 
-<hr style="height: 1px" />
+</div>
 
 ### 2. Users
 
