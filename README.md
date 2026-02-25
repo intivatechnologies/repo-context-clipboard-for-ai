@@ -24,7 +24,6 @@ I've chosen this license only to validate [https://mikesinclair66.github.io](my 
 You will have to have [https://cmake.org](CMake) installed to run the [](**installation steps**).
 
 ## Software Requirements Spec
-<div style="border-bottom: 1px">
 ### 1. Purpose
 1.1 System Overview
 
@@ -54,8 +53,6 @@ Terms for measurable success:
         User goal (e.g., reduce task time by 40%)
     </li>
 </ul>
-
-</div>
 
 ### 2. Users
 
@@ -88,8 +85,6 @@ Can manage users and system settings
 </ul>
 
 (Adjust roles as needed.)
-
-###
 
 ### 3. Functional Requirements
 
@@ -124,8 +119,6 @@ Group by domain if needed:
 ### Authentication
 ### Core Feature
 ### Admin Features
-
-###
 
 ### 4. Non-Functional Requirements
 These define system quality.
@@ -183,8 +176,6 @@ Minimum 70% unit test coverage
 </li>
 </ul>
 
-###
-
 ### 5. Data Model
 List core entities and key fields.
 [!NOTE]
@@ -227,8 +218,6 @@ description (text)
 createdAt (timestamp)
 </li>
 </ul>
-
-###
 
 # Who/What does this project exist to serve?
 
