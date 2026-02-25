@@ -55,7 +55,8 @@ Terms for measurable success:
         User goal (e.g., reduce task time by 40%)
     </li>
 </ul>
-<hr />
+
+###
 
 ### 2. Users
 
@@ -89,7 +90,7 @@ Can manage users and system settings
 
 (Adjust roles as needed.)
 
-<hr />
+###
 
 ### 3. Functional Requirements
 
@@ -125,7 +126,7 @@ Group by domain if needed:
 ### Core Feature
 ### Admin Features
 
-<hr />
+###
 
 ### 4. Non-Functional Requirements
 These define system quality.
@@ -183,6 +184,8 @@ Minimum 70% unit test coverage
 </li>
 </ul>
 
+###
+
 ### 5. Data Model
 List core entities and key fields.
 [!NOTE]
@@ -225,6 +228,8 @@ description (text)
 createdAt (timestamp)
 </li>
 </ul>
+
+###
 
 # Who/What does this project exist to serve?
 
