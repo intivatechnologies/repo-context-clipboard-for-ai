@@ -16,16 +16,15 @@ This project uses the [./LICENSE](MIT license). Because the solution is not inte
 I've chosen this license only to validate [https://mikesinclair66.github.io](my work).
 
 # Build Features (Ctrl/Cmd + Click to open in a new tab)
-- ["./readme_subfolder/CMake.md"](CMake Integration)[^1]
-- ["./readme_subfolder/CI-integrations.md"](CI integrations - GitHub Actions)[^2]</a>
+- [CMake Integration]("./readme_subfolder/CMake.md")[^1]
+- [CI integrations - GitHub Actions]("./readme_subfolder/CI-integrations.md")[^2]</a>
 [^1]: Location: "./readme_subfolder/CMake.md"
 [^2]: Location: "./readme_subfloder/CI-integrations.md"
 
 > [!IMPORTANT]
-You will have to have [https://cmake.org](CMake) installed to run the [](**installation steps**).
+You will have to have [CMake](https://cmake.org) installed to run the [](**installation steps**).
 
 # Software Requirements Spec
----
 
 ## 1. Purpose
 
