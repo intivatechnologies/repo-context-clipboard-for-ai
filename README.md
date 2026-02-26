@@ -20,7 +20,7 @@ This project uses the [MIT license](./LICENSE). Because the solution is not inte
 [^2]: Location: <a href="./readme_subfolder/CI-integrations.md">"./readme_subfolder/CI-integrations.md"</a>
 
 > [!IMPORTANT]
-You will have to have <a href="https://cmake.org">CMake</a> installed to run the <a name="project-build-steps">Project Build Steps</a>.
+You will have to have <a href="https://cmake.org">CMake</a> installed to run the [Project Build Steps](#project-build-steps).
 
 # Software Requirements Spec
 
