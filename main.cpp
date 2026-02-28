@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <stack>
+#include <filesystem>
 
 #include "file_messenger/directory.hpp"
 
@@ -10,23 +11,19 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 	if (argc > 1) {
-		stack<Directory> s;
-		Directory d = Directory::scanDirectoryForNames("", argv[1]);
+		string root = argv[1], rootName = root.substr(root.find_last_of("\\") + 1, root.size() - 1);
+		vector<string> subNames;
 
-		s.push(d);
-
-		while (!s.empty()) {
-			Directory vTop = s.top();
-			s.pop();
-
-			cout << "files:" << endl;
-			for (const auto& f : vTop.getFileNames())
-				cout << f << endl;
-			cout << "folders:" << endl;
-			for (const auto& f : vTop.getFolderNames())
-				cout << f << endl;
-			cout << "mainRoot: " << vTop.getRoot() << endl;
+		for (const auto& entry : filesystem::directory_iterator(argv[1])) {
+			string eps = entry.path().string(), name = eps.substr(root.size() + 1, eps.size() - 1);
+			subNames.push_back(name);
 		}
+
+		cout << rootName << ": {" << endl;
+		for (const auto& subName : subNames) {
+			cout << "\t" << subName << "," << endl;
+		}
+		cout << "}" << endl;
 
 		return 0;
 	}
