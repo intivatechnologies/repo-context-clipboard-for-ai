@@ -16,8 +16,8 @@ This project uses the [MIT license](./LICENSE). Because the solution is not inte
 # Build Features (Ctrl/Cmd + Click to open in a new tab)
 - [CMake Integration]("./readme_subfolder/CMake.md")[^1]
 - [CI integrations - GitHub Actions]("./readme_subfolder/CI-integrations.md")[^2]</a>
-[^1]: Location: <a href="./readme_subfolder/CMake.md">"./readme_subfolder/CMake.md"</a>
-[^2]: Location: <a href="./readme_subfolder/CI-integrations.md">"./readme_subfolder/CI-integrations.md"</a>
+[^1]: Location: ["./readme_subfolder/CMake.md"]("./readme_subfolder/CMake.md")
+[^2]: Location: ["./readme_subfolder/CI-integrations.md"]("./readme_subfolder/CI-integrations.md")
 
 > [!IMPORTANT]
 You will have to have <a href="https://cmake.org">CMake</a> installed to run the [Project Build Steps](#project-build-steps).
@@ -70,22 +70,22 @@ There are no administrative or multi-user roles. The application is single-user,
 
 ### Core Execution
 
-FR-1: The system shall accept a root directory as input.  
-FR-2: The system shall recursively traverse the provided directory.  
-FR-3: The system shall generate a structured textual representation of the directory contents.  
-FR-4: The system shall include file names in the generated output.  
-FR-5: The system shall include file contents in the generated output.  
-FR-6: The system shall preserve logical structure to maintain readability.  
-FR-7: The system shall copy the generated text to the system clipboard.  
-FR-8: The system shall complete execution without requiring manual interaction beyond launch.  
+FR-1: Accepts a root directory as input.
+FR-2: Recursively traverses the provided directory.
+FR-3: Generates a structured textual representation of the directory contents. 
+FR-4: Includes file names in the generated output. 
+FR-5: Includes file contents in the generated output.
+FR-6: Preserves logical structure to maintain readability. 
+FR-7: Copies the generated text to the system clipboard.
+FR-8: Completes execution without requiring manual interaction beyond launch.
 
 ### Build & Tooling
 
-FR-9: The system shall build using CMake version 3.20 or higher.  
-FR-10: The system shall support C++17.  
-FR-11: The system shall generate a Visual Studio 2022 solution via CMake.  
-FR-12: The system shall support out-of-source builds in a `/build` directory.  
-FR-13: The system shall successfully build in a Windows CI pipeline using GitHub Actions.  
+FR-9: Builds using CMake version 3.20 or higher.
+FR-10: Supports C++17.
+FR-11: Generates a Visual Studio 2022 solution via CMake.
+FR-12: Supports out-of-source builds in a /build directory.
+FR-13: Successfully builds inside of a Windows CI pipeline using GitHub Actions.  
 
 ---
 
@@ -215,10 +215,16 @@ cmake -S . -B build -G "Visual Studio 17 2022"
 To build the program .exe, you can do either of the following:
 ### Building the solution through Visual Studio
 1. Navigate to the build/ directory.
-2. Open HelloWorld.sln.
-3. **In Solution Explorer**, right-click HelloWorld.
+2. Open RepoContextClipboardForAi.sln.
+3. **In Solution Explorer**, right-click RepoContextClipboardForAi.
 4. Click "Set as Startup Project".
-5. Press **Run** or **Local Windows Debugger**.
+5. **In Solution Explorer**, right-click RepoContextClipboardForAi.
+6. Click "Properties"
+7. Click "Configuration Properties" <> "Debugging"
+8. In the "Command Arguments" field, paste in the path to the root directory of RepoContextClipboardForAi.sln
+- Make sure that the path is open-ended and doesn't contain a '\' at the end
+    - i.e. 'C:\Users\micha\local-dev-workspace\repo-context-for-ai'
+9. Press **Run** or **Local Windows Debugger**.
 
 ### Through the command line
 After running the following command:
