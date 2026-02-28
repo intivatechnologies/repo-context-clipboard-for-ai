@@ -222,6 +222,8 @@ To build the program .exe, you can do either of the following:
 6. Click "Properties"
 7. Click "Configuration Properties" <> "Debugging"
 8. In the "Command Arguments" field, paste in the path to the root directory of RepoContextClipboardForAi.sln
+- Make sure that the path is open-ended and doesn't contain a '\' at the end
+    - i.e. 'C:\Users\micha\local-dev-workspace\repo-context-for-ai'
 9. Press **Run** or **Local Windows Debugger**.
 
 ### Through the command line

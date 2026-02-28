@@ -6,7 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SOURCES
     "main.cpp"
-    "file_messenger/file_locator.hpp")
+    "file_messenger/directory.hpp"
+    "file_messenger/directory.cpp")
 
 # The TREE argument mirrors your disk folders into VS filters
 source_group(TREE "${CMAKE_CURRENT_SOURCE_DIR}" FILES ${SOURCES})
