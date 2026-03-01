@@ -1,8 +1,9 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <stack>
+#include <map>
 #include <filesystem>
 #include <algorithm>
 
@@ -32,7 +33,11 @@ string getRootName(filesystem::path path) {
 
 static const vector<string> ignoreNames({ ".git", "build" });
 
+static const vector<string> includeForContents({ ".yml", ".cpp", ".hpp", ".txt", ".md"});
+static map<string, string> fileContents;
+
 vector<PlacedLine> getPlacedLines(string root) {
+	//whenever getPlacedLines() is called, it starts by tabulating its return content
 	PlaceOperation nextOperation = PlaceOperation::TABULATE;
 	string rootName = getRootName(root);
 	vector<PlacedLine> lines;
@@ -42,20 +47,43 @@ vector<PlacedLine> getPlacedLines(string root) {
 		//extract the file/folder name
 		string eps = entry.path().string(), name = eps.substr(root.size() + 1, eps.size() - 1);
 
-		if (entry.is_regular_file())
+		if (entry.is_regular_file()) {
 			lines.push_back(PlacedLine(name + ",", nextOperation));
+			//fileContents.insert({ root + '\\' + name, vector<string>()});
+
+			//store file content if extension is favoured
+			const int dotPosition = name.find_last_of('.');
+			if (dotPosition != -1) {
+				const string extension = name.substr(dotPosition, name.size() - 1);
+				auto includeForContentsCheck = find(includeForContents.begin(),
+					includeForContents.end(), extension);
+
+				if (includeForContentsCheck != includeForContents.end()) {
+					ifstream file(root + '\\' + name);
+					if (!file)
+						throw std::runtime_error("Failed to open file");
+
+					ostringstream buffer;
+					buffer << file.rdbuf(); //read entire file
+
+					fileContents.insert({ root + '\\' + name, buffer.str() });
+				}
+			}
+		}
 		else {
 			auto ignoreNameCheck = find(ignoreNames.begin(), ignoreNames.end(), name);
-
 			if (ignoreNameCheck != ignoreNames.end())
-				lines.push_back(PlacedLine(name + ": ... ,", nextOperation));
+				//ignores all folder contents with a single line
+				lines.push_back(PlacedLine(name + ": { ... },", nextOperation));
 			else {
 				lines.push_back(PlacedLine(name + ": {", nextOperation));
 
+				//function recalls itself to acquire inner/nested content
 				vector<PlacedLine> nestedLines = getPlacedLines(root + "\\" + name);
 				for (const auto& nestedEntry : nestedLines)
 					lines.push_back(nestedEntry);
 
+				//if there is no inner/nested content, no tabulation/detabulation occurs
 				lines.push_back(PlacedLine("}", nestedLines.size() > 0
 					? PlaceOperation::DETABULATE : PlaceOperation::CONTINUE));
 			}
@@ -70,16 +98,19 @@ vector<PlacedLine> getPlacedLines(string root) {
 
 int main(int argc, char* argv[]) {
 	if (argc > 1) {
-		vector<PlacedLine> lines({ PlacedLine(getRootName(argv[1]) + ": {")});
-		vector<PlacedLine> nestedLines = getPlacedLines(argv[1]);
+		cout << "> PROJECT STRUCTURE:" << endl;
 
-		for (const auto& nestedEntry : nestedLines)
+		vector<PlacedLine> lines({ PlacedLine(getRootName(argv[1]) + ": {") });
+
+		for (const auto& nestedEntry : getPlacedLines(argv[1]))
 			lines.push_back(nestedEntry);
+
 		lines.push_back(PlacedLine("}", PlaceOperation::DETABULATE));
 
 		string indentation = "";
 		int tabsSoFar = 0;
 
+		//loads indentation into the text (based on the PlacedLine objects)
 		for (PlacedLine pl : lines) {
 			switch (pl.getPlaceOperation()) {
 			case PlaceOperation::TABULATE:
@@ -95,6 +126,13 @@ int main(int argc, char* argv[]) {
 			}
 
 			cout << indentation << pl.getLine() << endl;
+		}
+
+		cout << "> FILE CONTENTS" << endl;
+		for (const auto& [key, value] : fileContents)
+		{
+			cout << ">> \"" << key << '\"' << endl;
+			cout << value << endl << endl;
 		}
 
 		return 0;
