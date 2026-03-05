@@ -7,17 +7,18 @@
 #include "../file_records/folder_rep.hpp"
 
 using namespace std;
+using namespace file_records;
 
 namespace directory_tree {
 	class DirectoryTree {
 		//privatize constructor to enforce singleton pattern
 		DirectoryTree() = default;
 
+		static const char indentationUnits[];
 		string indentationVolume = "";
 
 		void modifyIndentationStep(bool positiveStep);
 		void getFamilyOfChildren(string& textualRep, FolderRep* parent);
-		FolderRep* getFolderAtRoot(string root);
 
 	public:
 		static DirectoryTree& getInstance() {
@@ -29,6 +30,6 @@ namespace directory_tree {
 		DirectoryTree(const DirectoryTree&) = delete;
 		DirectoryTree& operator=(const DirectoryTree&) = delete;
 
-		string startAt(string root);
+		string startAt(FolderRep* rep);
 	};
 }

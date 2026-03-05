@@ -7,29 +7,44 @@
 
 using namespace std;
 
-class FileRep {
-protected:
-	const string name;
+namespace file_records {
+	class FileRecord {
+		const string name;
 
-public:
-	FileRep(const string name) : name(name) {}
+	public:
+		FileRecord(const string name) : name(name) {}
+		virtual ~FileRecord() = default; // Make destructor virtual for polymorphism
 
-	virtual ~FileRep() = default; // Make destructor virtual for polymorphism
+		const string getName() const {
+			return name;
+		}
+	};
 
-	const string getName() const {
-		return name;
-	}
-};
+	class FileRep : public FileRecord {
+	protected:
+		const string extension;
 
-class FolderRep : public FileRep {
-	const vector<FileRep*> children;
+	public:
+		FileRep(const string name, const string extension) : FileRecord(name), extension(extension) {}
 
-public:
-	FolderRep(const string name, const vector<FileRep*> children) : FileRep(name), children(children) {}
+		const string getExtension() const {
+			return extension;
+		}
+	};
 
-	const vector<FileRep*> getChildren() const {
-		return children;
-	}
-};
+	class FolderRep : public FileRecord {
+		const vector<FileRecord*> children;
+
+	public:
+		static FolderRep* installFolderAtRoot(string root);
+
+		FolderRep(const string name, const vector<FileRecord*> children)
+			: FileRecord(name), children(children) {}
+
+		const vector<FileRecord*>& getChildren() const {
+			return children;
+		}
+	};
+}
 
 #endif

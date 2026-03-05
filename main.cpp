@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 
+#include "file_records/folder_rep.hpp"
 #include "directory_tree/directory_tree.hpp"
 
 using namespace std;
@@ -18,7 +19,10 @@ int main(int argc, char* argv[]) {
 				includeForFileContents.push_back(argv[i]);
 		}
 
-		string textualRep = DirectoryTree::getInstance().startAt(argv[1]);
+		FolderRep* assignedFolder = FolderRep::installFolderAtRoot(argv[1]);
+
+		string textualRep = DirectoryTree::getInstance().startAt(assignedFolder);
+
 		cout << "> PROJECT STRUCTURE:" << endl;
 		cout << textualRep << endl;
 

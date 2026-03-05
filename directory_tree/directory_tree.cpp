@@ -6,44 +6,38 @@
 using namespace directory_tree;
 using namespace std::filesystem;
 
+const char DirectoryTree::indentationUnits[3] = { ' ', ' ' };
+
 void DirectoryTree::modifyIndentationStep(bool positiveStep) {
-	indentationVolume = positiveStep ? indentationVolume + '\t' :
-		indentationVolume.substr(0, indentationVolume.find_last_of("\t"));
+	if (positiveStep) {
+		for (char indentationUnit : indentationUnits)
+			indentationVolume += indentationUnit;
+	}
+	else for (char indentationUnit : indentationUnits)
+		indentationVolume = indentationVolume.substr(0, indentationVolume.find_last_of(indentationUnit));
 }
 
 void DirectoryTree::getFamilyOfChildren(string& textualRep, FolderRep* parent) {
 	textualRep += indentationVolume + parent->getName() + '\n';
 	modifyIndentationStep(true);
-	for (const auto& entryChild : parent->getChildren())
-		textualRep += indentationVolume + entryChild->getName() + '\n';
+
+	vector<FileRecord*> children = parent->getChildren();
+	if(children.size() > 0)
+		for (const auto& entryChild : children) {
+			if (entryChild != nullptr) {
+				if (dynamic_cast<FolderRep*>(entryChild) != nullptr)
+					getFamilyOfChildren(textualRep, static_cast<FolderRep*>(entryChild));
+
+				textualRep += indentationVolume + entryChild->getName() + '\n';
+			}
+		}
+		
 	modifyIndentationStep(false);
 }
 
-FolderRep* DirectoryTree::getFolderAtRoot(string root) {
-	vector<FileRep*> rootChildren;
-
-	for (const auto& entry : directory_iterator(root)) {
-		if (entry.is_regular_file())
-			rootChildren.push_back(new FileRep(entry.path().filename().string()));
-		else
-			rootChildren.push_back(getFolderAtRoot(entry.path().string()));
-	}
-
-	return new FolderRep(getRootName(root), rootChildren);
-}
-
-string DirectoryTree::startAt(string root) {
-	FolderRep* rootFolder = getFolderAtRoot(root);
+string DirectoryTree::startAt(FolderRep* rep) {
 	string textualRep = "";
-
-	for (const auto& entry : rootFolder->getChildren()) {
-		if (entry != nullptr) {
-			if (dynamic_cast<FolderRep*>(entry) != nullptr)
-				getFamilyOfChildren(textualRep, static_cast<FolderRep*>(entry));
-			else
-				textualRep += indentationVolume + entry->getName() + '\n';
-		}
-	}
+	getFamilyOfChildren(textualRep, rep);
 
 	return textualRep;
 }
