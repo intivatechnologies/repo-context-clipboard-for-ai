@@ -19,12 +19,12 @@ void DirectoryTree::modifyIndentationStep(bool positiveStep) {
 void DirectoryTree::getFamilyOfChildren(string& textualRep, FolderRep* parent) {
 	modifyIndentationStep(true);
 
-	vector<FileRecord*> children = parent->getChildren();
+	vector<FolderRecord*> children = parent->getChildren();
 	if(children.size() > 0)
 		for (const auto& entryChild : children) {
 			if (entryChild != nullptr) {
 				textualRep += indentationVolume + entryChild->getName() + '\n';
-				if (dynamic_cast<FolderRep*>(entryChild) != nullptr)
+				if (entryChild->recordClassifier == FolderRecord::RecordClassifier::FOLDER)
 					getFamilyOfChildren(textualRep, static_cast<FolderRep*>(entryChild));
 			}
 		}

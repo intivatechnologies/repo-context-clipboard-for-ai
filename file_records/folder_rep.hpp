@@ -8,12 +8,14 @@
 using namespace std;
 
 namespace file_records {
-	class FileRecord {
+	class FolderRecord {
 		const string name, root;
 
 	public:
-		FileRecord(const string name, const string root) : name(name), root(root) {}
-		virtual ~FileRecord() = default; // Make destructor virtual for polymorphism
+		enum RecordClassifier { FILE, FOLDER } recordClassifier;
+
+		FolderRecord(const string name, const string root) : name(name), root(root) {}
+		virtual ~FolderRecord() = default; // Make destructor virtual for polymorphism
 
 		const string getName() const {
 			return name;
@@ -24,33 +26,37 @@ namespace file_records {
 		}
 	};
 
-	class FileRep : public FileRecord {
+	class FileRep : public FolderRecord {
 	protected:
 		const string extension;
 
 	public:
 		FileRep(const string name, const string root, const string extension) 
-			: FileRecord(name, root), extension(extension) {}
+			: FolderRecord(name, root), extension(extension) {
+			recordClassifier = RecordClassifier::FILE;
+		}
 
 		const string getExtension() const {
 			return extension;
 		}
 	};
 
-	class FolderRep : public FileRecord {
+	class FolderRep : public FolderRecord {
 		static const vector<string> disincludeFolders;
 
-		const vector<FileRecord*> children;
+		const vector<FolderRecord*> children;
 
 	public:
 		static FolderRep* installFolderAtRoot(string root);
 		static void loadAllRootsByExtension(vector<string>& roots, FolderRep* parentFolder,
 			const string ext);
 
-		FolderRep(const string name, const string root, const vector<FileRecord*> children)
-			: FileRecord(name, root), children(children) {}
+		FolderRep(const string name, const string root, const vector<FolderRecord*> children)
+			: FolderRecord(name, root), children(children) {
+			recordClassifier = RecordClassifier::FOLDER;
+		}
 
-		const vector<FileRecord*>& getChildren() const {
+		const vector<FolderRecord*>& getChildren() const {
 			return children;
 		}
 	};

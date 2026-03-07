@@ -8,7 +8,7 @@ using namespace file_records;
 const vector<string> FolderRep::disincludeFolders = { ".git", "build" };
 
 FolderRep* FolderRep::installFolderAtRoot(string root) {
-	vector<FileRecord*> rootChildren;
+	vector<FolderRecord*> rootChildren;
 	const string name = getRootName(root);
 
 	bool disincludeFolder = false;
@@ -35,12 +35,18 @@ FolderRep* FolderRep::installFolderAtRoot(string root) {
 void FolderRep::loadAllRootsByExtension(vector<string>& roots, FolderRep* parentFolder,
 const string ext) {
 	for (const auto& child : parentFolder->getChildren()) {
-		if (dynamic_cast<FileRep*>(child) != nullptr) {
-			FileRep* sameChild = static_cast<FileRep*>(child);
-			if (sameChild->getExtension() == ext)
-				roots.push_back(sameChild->getRoot());
+		FolderRecord::RecordClassifier recordClassifier = child->recordClassifier;
+
+		FileRep* sameChild;
+		switch (recordClassifier) {
+			case FolderRecord::RecordClassifier::FILE:
+				sameChild = static_cast<FileRep*>(child);
+				if (sameChild->getExtension() == ext)
+					roots.push_back(sameChild->getRoot());
+				break;
+			case FolderRecord::RecordClassifier::FOLDER:
+				loadAllRootsByExtension(roots, static_cast<FolderRep*>(child), ext);
+				break;
 		}
-		else if (dynamic_cast<FolderRep*>(child) != nullptr)
-			loadAllRootsByExtension(roots, static_cast<FolderRep*>(child), ext);
 	}
 }
