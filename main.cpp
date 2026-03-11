@@ -76,24 +76,22 @@ int main(int argc, char* argv[]) {
 	//AssignedTests::runTests();
 
 	if (argc > 1) {
-		Flags conf = parseFlags(argc, argv);
-		installFlags(conf);
+		Flags conf = parseAndInstallFlags(argc, argv);
 
-		auto rootIter = conf.flags.find(K_ROOT);
-		if (rootIter != conf.flags.end()) {
+		if (conf.has(K_ROOT)) {
 			//then we have a root path to work with
-			filesystem::path rootPath(rootIter->second.at(0));
+			filesystem::path rootPath(conf.flags[K_ROOT].at(0));
 			filesystem::directory_entry rootEntry(rootPath);
 
 			//build the tree
 			FilesystemNode rootNode(&rootEntry);
-			rootNode.buildOut(conf.flags.at(K_EXCLUDE_DIR));
+			rootNode.buildOut(conf.flags[K_EXCLUDE_DIR]);
 			presentStructureTreeIfPrompted(conf, rootNode);
-
 			
 			//present the contents
 			//if (checkThatContentExtensionsAreAvailable(conf) && presentContentsIfPrompted(conf, rootNode));
-		}
+		} else
+			throw "You must specify a root path with the --root flag.";
 	}
 
 	return 0;

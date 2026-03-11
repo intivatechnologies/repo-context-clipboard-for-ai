@@ -33,8 +33,7 @@ namespace client {
 	}
 	*/
 
-	//populate map 'flags' with all flags and tags
-	Flags parseFlags(int argc, char* argv[]) {
+	Flags parseAndInstallFlags(int argc, char* argv[]) {
 		Flags conf;
 
 		auto compareToEscapeCharacter = [](char beingCompared) {
@@ -54,8 +53,7 @@ namespace client {
 
 			if (!token.empty()) {
 				//process for --flags
-				if (token.rfind("--", 0) == 0)
-				{
+				if (token.rfind("--", 0) == 0) {
 					currentFlag = token.substr(2);
 					conf.flags[currentFlag]; // ensure key exists
 				}
@@ -68,17 +66,9 @@ namespace client {
 			}
 		}
 
-		//print all flags and tags
-		//printAllFlagsAndTags(conf);
-
-		return conf;
-	}
-
-	//assign tags and refine where needed
-	void installFlags(Flags& conf) {
 		//ensure file extensions have a dot char at the beginning
 		for (int i = 0; i < conf.flags[K_INCLUDE_EXT].size(); i++) {
-			if(conf.flags[K_INCLUDE_EXT][i][0] != '.')
+			if (conf.flags[K_INCLUDE_EXT][i][0] != '.')
 				conf.flags[K_INCLUDE_EXT][i] = '.' + conf.flags[K_INCLUDE_EXT][i];
 		}
 
@@ -94,5 +84,7 @@ namespace client {
 
 		//print all flags and tags
 		//printAllFlagsAndTags(conf);
+
+		return conf;
 	}
 }

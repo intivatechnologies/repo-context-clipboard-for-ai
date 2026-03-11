@@ -22,10 +22,12 @@ namespace test_repurposing {
 
 			auto argv = TestUtil::makeArgv(args);
 
-			Flags conf = parseFlags(argv.size(), argv.data());
+			Flags conf = parseAndInstallFlags(argv.size(), argv.data());
 
-			TestUtil::assertTrue(conf.flags["root"][0] == "./repo", "root flag parsed");
-			TestUtil::assertTrue(conf.flags["mode"][0] == "structure", "mode parsed");
+			TestUtil::assertTrue(conf.flags[K_ROOT][0].size() > 0
+				&& conf.flags[K_ROOT][0] == "./repo", "root flag parsed");
+			TestUtil::assertTrue(conf.flags[K_MODE][0].size() > 0
+				&& conf.flags[K_MODE][0] == "structure", "mode parsed");
 		}
 
 		static void test_multi_value_flag() {
@@ -37,9 +39,9 @@ namespace test_repurposing {
 
 			auto argv = TestUtil::makeArgv(args);
 
-			Flags conf = parseFlags(argv.size(), argv.data());
+			Flags conf = parseAndInstallFlags(argv.size(), argv.data());
 
-			TestUtil::assertTrue(conf.flags["exclude-dir"].size() == 3, "exclude-dir has 3 entries");
+			TestUtil::assertTrue(conf.flags[K_EXCLUDE_DIR].size() == 3, "exclude-dir has 3 entries");
 		}
 
 		static void test_extension_normalization() {
@@ -51,12 +53,14 @@ namespace test_repurposing {
 
 			auto argv = TestUtil::makeArgv(args);
 
-			Flags conf = parseFlags(argv.size(), argv.data());
-			installFlags(conf);
+			Flags conf = parseAndInstallFlags(argv.size(), argv.data());
 
-			TestUtil::assertTrue(conf.flags[K_INCLUDE_EXT][0] == ".yml", "yml normalized");
-			TestUtil::assertTrue(conf.flags[K_INCLUDE_EXT][1] == ".hpp", "hpp unchanged");
-			TestUtil::assertTrue(conf.flags[K_INCLUDE_EXT][2] == ".md", "md normalized");
+			TestUtil::assertTrue(conf.flags[K_INCLUDE_EXT].size() > 0 && 
+				conf.flags[K_INCLUDE_EXT][0] == ".yml", "yml normalized");
+			TestUtil::assertTrue(conf.flags[K_INCLUDE_EXT].size() > 1 && 
+				conf.flags[K_INCLUDE_EXT][1] == ".hpp", "hpp unchanged");
+			TestUtil::assertTrue(conf.flags[K_INCLUDE_EXT].size() > 2 && 
+				conf.flags[K_INCLUDE_EXT][2] == ".md", "md normalized");
 		}
 
 		static void test_mode_flags() {
@@ -68,8 +72,7 @@ namespace test_repurposing {
 
 			auto argv = TestUtil::makeArgv(args);
 
-			Flags conf = parseFlags(argv.size(), argv.data());
-			installFlags(conf);
+			Flags conf = parseAndInstallFlags(argv.size(), argv.data());
 
 			TestUtil::assertTrue(conf.MODE_FLAG & Flags::MF_STRUCTURE, "structure mode flag set");
 			TestUtil::assertTrue(conf.MODE_FLAG & Flags::MF_CONTENT, "content mode flag set");
@@ -84,9 +87,7 @@ namespace test_repurposing {
 
 			try {
 
-				auto it = conf.flags.find(K_INCLUDE_EXT);
-
-				if (it == conf.flags.end() || it->second.empty())
+				if (!conf.has(K_INCLUDE_EXT) || conf.flags[K_INCLUDE_EXT].empty())
 					TestUtil::throwErr("file extensions to dedicate for extraction");
 
 			}
